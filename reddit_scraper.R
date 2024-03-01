@@ -8,7 +8,7 @@ library(RSelenium)
 library(netstat)
 
 # Start the server
-rs_driver_object <- rsDriver(browser = 'firefox', verbose = FALSE, port = 14416L, chromever = NULL)
+rs_driver_object <- rsDriver(browser = 'firefox', verbose = FALSE, port = free_port(), chromever = NULL)
 
 # Create a client object
 remDr <- rs_driver_object$client

@@ -1,3 +1,5 @@
+# Code keeps pressing the Load More Comments Button and keeps scrolling to the end.
+
 # Load packages
 library(RSelenium)
 start_time <- Sys.time()

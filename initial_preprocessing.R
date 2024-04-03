@@ -46,4 +46,33 @@ new_df <- df %>%
   # Ungroup the dataframe
   ungroup()
 
-write.csv(new_df, "preprocessed_reddit_comments.csv", row.names = FALSE)
+print(paste("Dimensions of df after MERGING COMMENTS :", dim(new_df)))
+
+## Removing outlier comments based on length by using the IQR method.
+
+# Function to count words in a string
+count_words <- function(text) {
+  words <- unlist(strsplit(text, "\\s+"))
+  return(length(words))
+}
+
+# Apply the function to each entry in column C and store the counts
+word_counts <- sapply(new_df$COMMENT, count_words)
+
+# Find first and third quartiles
+first_quartile <- quantile(word_counts, 0.25)
+third_quartile <- quantile(word_counts, 0.75)
+
+iqr <- third_quartile - first_quartile
+
+# Calculate the upper and lower bounds
+lower_bound <- first_quartile - 1.5 * iqr
+upper_bound <- third_quartile + 1.5 * iqr
+
+# Filter rows based on the upper and lower bounds
+filtered_data <- new_df[word_counts >= lower_bound & word_counts <= upper_bound, ]
+
+print(paste("Dimensions of df after filtering on IQR :", dim(filtered_data)))
+
+
+write.csv(filtered_data, "preprocessed_reddit_comments_2.csv", row.names = FALSE)
